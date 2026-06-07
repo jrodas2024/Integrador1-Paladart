@@ -4,7 +4,9 @@ import pe.utp.paladart.business.VentaService;
 import pe.utp.paladart.domain.Venta;
 import pe.utp.paladart.persistence.IVentaDAO;
 import pe.utp.paladart.persistence.VentaDAOMock;
-
+import pe.utp.paladart.util.ExportadorExcel;
+import com.google.common.collect.Lists;
+import java.util.List;
 /*
  * Clase principal del sistema.
  * Simula el registro de una venta utilizando
@@ -20,14 +22,19 @@ public class Main {
         // Inyectar la dependencia mediante el constructor
         VentaService ventaService = new VentaService(dao);
 
-        // Crear una venta de ejemplo
-        Venta venta = new Venta(
-                1,
-                80.24,
-                "Efectivo"
+        // Crear una lista de ventas utilizando Google Guava
+        List<Venta> ventas = Lists.newArrayList(
+                new Venta(1, 80.24, "Efectivo"),
+                new Venta(2, 150.00, "Tarjeta"),
+                new Venta(3, 45.50, "Yape"),
+                new Venta(4, 200.00, "Plin")
         );
 
-        // Registrar la venta
-        ventaService.registrarVenta(venta);
+// Registrar cada venta
+        for (Venta venta : ventas) {
+            ventaService.registrarVenta(venta);
+        }
+        ExportadorExcel exportador = new ExportadorExcel();
+        exportador.generarReporte(ventas);
     }
 }
