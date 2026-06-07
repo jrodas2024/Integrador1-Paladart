@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Archivos de IntelliJ
+.idea/
+*.iml
+
+# Carpetas generadas por compilación
+target/
+out/
+
+# Archivos generados por el proyecto
+ReporteVentas.xlsx

@@ -4,27 +4,46 @@ Proyecto Integrador 1 - Sistema de Ventas y Emisión de Comprobantes para Restau
 
 ## Arquitectura
 
+El proyecto sigue una arquitectura por capas:
+
 - Presentation
 - Business
 - Persistence
 - Domain
 
-## Entidad implementada
+## Tecnologías utilizadas
 
-- Venta
+- Java 21
+- Maven
+- Apache POI
+- Logback
+- Google Guava
+- Git y GitHub
 
-## Componentes
+## Componentes implementados
 
+### Domain
 - Venta.java
+
+### Persistence
 - IVentaDAO.java
 - VentaDAOMock.java
+
+### Business
 - VentaService.java
+
+### Presentation
 - Main.java
-- 
-## Patrón aplicado
 
-Se implementó el patrón DAO (Data Access Object) mediante la interfaz IVentaDAO para desacoplar la lógica de negocio de la capa de persistencia.
+### Util
+- ExportadorExcel.java
 
-## Inyección de dependencias
+## Funcionalidades
 
-La clase VentaService recibe la interfaz IVentaDAO mediante su constructor, permitiendo cambiar la implementación de persistencia sin afectar la lógica de negocio.
+- Registro de ventas
+- Validaciones de negocio con Google Guava
+- Registro de eventos mediante Logback
+- Exportación de ventas a Excel usando Apache POI
+- Arquitectura por capas
+- Patrón DAO
+- Inyección de dependencias
