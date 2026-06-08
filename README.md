@@ -6,10 +6,55 @@ Proyecto Integrador 1 - Sistema de Ventas y Emisión de Comprobantes para Restau
 
 El proyecto sigue una arquitectura por capas:
 
-* Presentation
-* Business
-* Persistence
-* Domain
+### Presentation Layer
+- Main.java
+- VentaView.java
+- VentaController.java
+
+### Business Layer
+- VentaService.java
+
+### Persistence Layer
+- IVentaDAO.java
+- VentaDAOMock.java
+
+### Domain Layer
+- Venta.java
+
+## Patrones y Principios Aplicados
+
+### Arquitectura por Capas
+
+Se separó la aplicación en Presentation, Business, Persistence y Domain para facilitar el mantenimiento y escalabilidad.
+
+### MVC (Model - View - Controller)
+
+Implementado en la capa de presentación:
+
+- Model: Venta
+- View: VentaView
+- Controller: VentaController
+
+### DAO (Data Access Object)
+
+Implementado mediante:
+
+- IVentaDAO
+- VentaDAOMock
+
+Permite desacoplar la lógica de negocio del acceso a datos.
+
+### Inyección de Dependencias
+
+Las dependencias son inyectadas mediante interfaces.
+
+Ejemplo:
+IVentaDAO dao = new VentaDAOMock();
+VentaService ventaService = new VentaService(dao);
+
+### Principios SOLID
+
+Se aplica el principio DIP, permitiendo que la lógica de negocio utilice la interfaz IVentaDAO y pueda cambiar fácilmente la implementación del acceso a datos sin modificar el servicio.
 
 ## Tecnologías y librerías utilizadas
 
@@ -45,28 +90,6 @@ Implementación de pruebas unitarias para validar reglas de negocio.
 
 Control de versiones y gestión del repositorio.
 
-## Componentes implementados
-
-### Domain
-
-* Venta.java
-
-### Persistence
-
-* IVentaDAO.java
-* VentaDAOMock.java
-
-### Business
-
-* VentaService.java
-
-### Presentation
-
-* Main.java
-
-### Util
-
-* ExportadorExcel.java
 
 ## Funcionalidades implementadas
 
@@ -78,6 +101,8 @@ Control de versiones y gestión del repositorio.
 * Patrón DAO.
 * Inyección de dependencias.
 * Pruebas unitarias con JUnit.
+* Implementación de MVC.
+* Aplicación del principio SOLID (DIP).
 
 ## Pruebas Unitarias
 
