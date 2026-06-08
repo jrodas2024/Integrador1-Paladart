@@ -36,6 +36,11 @@ public class VentaService {
                 venta.getTotal() > 0,
                 "El total debe ser mayor a cero");
 
+        // Validación con Google Guava: el ID debe ser válido
+        Preconditions.checkArgument(
+                venta.getIdVenta() > 0,
+                "El ID de la venta debe ser mayor a cero");
+
         // Validación con Google Guava: debe existir método de pago
         Preconditions.checkArgument(
                 venta.getMetodoPago() != null && !venta.getMetodoPago().isBlank(),
