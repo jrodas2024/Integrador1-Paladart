@@ -1,99 +1,75 @@
 package pe.utp.paladart.business;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pe.utp.paladart.domain.Venta;
 import pe.utp.paladart.persistence.IVentaDAO;
-import pe.utp.paladart.persistence.VentaDAOMock;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 /**
- * Pruebas unitarias para la clase VentaService.
- * Permiten validar las reglas de negocio utilizando JUnit.
+ * Pruebas unitarias para VentaService usando JUnit 5 y Mockito.
  */
+@ExtendWith(MockitoExtension.class)
 public class VentaServiceTest {
 
-    /**
-     * Verifica que no se permita registrar una venta
-     * cuando el método de pago está vacío.
-     */
+    @Mock
+    private IVentaDAO ventaDAO;
+
+    @InjectMocks
+    private VentaService ventaService;
+
+    @Test
+    void debeRegistrarVentaCorrectamente() {
+        Venta venta = new Venta(1, 100.0, "Efectivo");
+
+        ventaService.registrarVenta(venta);
+
+        verify(ventaDAO).crearVenta(venta);
+    }
+
     @Test
     void validarMetodoPagoObligatorio() {
+        Venta venta = new Venta(1, 100.0, "");
 
-        // Implementación simulada del DAO
-        IVentaDAO dao = new VentaDAOMock();
-
-        // Servicio que contiene las reglas de negocio
-        VentaService service = new VentaService(dao);
-
-        // Venta inválida: método de pago vacío
-        Venta venta = new Venta(
-                1,
-                100.0,
-                ""
-        );
-
-        // Se espera una excepción porque el método de pago es obligatorio
         assertThrows(
                 IllegalArgumentException.class,
-                () -> service.registrarVenta(venta),
+                () -> ventaService.registrarVenta(venta),
                 "No se debe permitir registrar ventas sin método de pago"
         );
+
+        verify(ventaDAO, never()).crearVenta(any(Venta.class));
     }
 
-    /**
-     * Verifica que no se permita registrar una venta
-     * cuando el total es menor o igual a cero.
-     */
     @Test
     void validarTotalMayorACero() {
+        Venta venta = new Venta(2, -20.0, "Efectivo");
 
-        // Implementación simulada del DAO
-        IVentaDAO dao = new VentaDAOMock();
-
-        // Servicio que contiene las reglas de negocio
-        VentaService service = new VentaService(dao);
-
-        // Venta inválida: total negativo
-        Venta venta = new Venta(
-                2,
-                -20.0,
-                "Efectivo"
-        );
-
-        // Se espera una excepción porque el total debe ser mayor a cero
         assertThrows(
                 IllegalArgumentException.class,
-                () -> service.registrarVenta(venta),
+                () -> ventaService.registrarVenta(venta),
                 "No se debe permitir registrar ventas con total negativo"
         );
+
+        verify(ventaDAO, never()).crearVenta(any(Venta.class));
     }
 
-    /**
-     * Verifica que no se permita registrar una venta
-     * cuando el ID de la venta es menor o igual a cero.
-     */
     @Test
-    void validarIdVentaMayorACero() {
+    void debeGenerarSiguienteIdSegunCantidadDeVentas() {
+        when(ventaDAO.listarVentas()).thenReturn(List.of(
+                new Venta(1, 100.0, "Efectivo"),
+                new Venta(2, 50.0, "Yape")
+        ));
 
-        // Implementación simulada del DAO
-        IVentaDAO dao = new VentaDAOMock();
+        int siguienteId = ventaService.obtenerSiguienteId();
 
-        // Servicio que contiene las reglas de negocio
-        VentaService service = new VentaService(dao);
-
-        // Venta inválida: ID negativo
-        Venta venta = new Venta(
-                -1,
-                100.0,
-                "Efectivo"
-        );
-
-        // Se espera una excepción porque el ID debe ser mayor a cero
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> service.registrarVenta(venta),
-                "No se debe permitir registrar ventas con ID menor o igual a cero"
-        );
+        assertEquals(3, siguienteId);
     }
 }

@@ -7,6 +7,7 @@
     <groupId>pe.utp</groupId>
     <artifactId>paladart</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -43,8 +44,29 @@
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
+        <!-- Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- AssertJ-->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.25.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
+
 
 
 </project>

@@ -1,24 +1,35 @@
-# Compiled class file
+# ==========================
+# Archivos compilados Java
+# ==========================
 *.class
 
-# Log file
+# ==========================
+# Logs
+# ==========================
 *.log
 
-# BlueJ files
-*.ctxt
+# ==========================
+# Archivos Maven
+# ==========================
+target/
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# Reportes de Surefire
+*.dumpstream
+surefire-reports/
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+# ==========================
+# IntelliJ IDEA
+# ==========================
+.idea/
+*.iml
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# ==========================
+# Archivos temporales
+# ==========================
+*.tmp
+*.swp
+
+# ==========================
+# Archivos generados
+# ==========================
+*.xlsx

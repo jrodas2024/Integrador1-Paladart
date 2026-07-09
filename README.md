@@ -1,41 +1,58 @@
 # Integrador1-Paladart
 
-Proyecto Integrador 1 - Sistema de Ventas y Emisión de Comprobantes para Restaurante Paladart.
+Proyecto Integrador 1 - Sistema Web de Gestión de Ventas y Emisión de Comprobantes para el restaurante **Paladart**.
 
-## Arquitectura
+---
 
-El proyecto sigue una arquitectura por capas:
+# Descripción
 
-### Presentation Layer
-- Main.java
-- VentaView.java
+Paladart es una aplicación web desarrollada en Java que permite registrar ventas, consultar el listado de ventas y exportar la información a un archivo Excel. El proyecto fue desarrollado aplicando arquitectura por capas, patrón DAO, inyección de dependencias y pruebas unitarias.
+
+---
+
+# Arquitectura del Proyecto
+
+El proyecto está organizado utilizando una arquitectura por capas:
+
+## Presentation
+- VentaServlet.java
+- index.jsp
+- ventas.jsp
+- listarVentas.jsp
+
+## Controller
 - VentaController.java
 
-### Business Layer
+## Business
 - VentaService.java
 
-### Persistence Layer
+## Persistence
 - IVentaDAO.java
 - VentaDAOMock.java
 
-### Domain Layer
+## Domain
 - Venta.java
 
-## Patrones y Principios Aplicados
+## Util
+- ExportadorExcel.java
 
-### Arquitectura por Capas
+---
 
-Se separó la aplicación en Presentation, Business, Persistence y Domain para facilitar el mantenimiento y escalabilidad.
+# Patrones y Principios Aplicados
 
-### MVC (Model - View - Controller)
+## Arquitectura por Capas
 
-Implementado en la capa de presentación:
+Se separó la aplicación en las capas Presentation, Controller, Business, Persistence, Domain y Util para mejorar el mantenimiento, organización y escalabilidad.
+
+## MVC (Model - View - Controller)
+
+Se implementó el patrón MVC en la aplicación web:
 
 - Model: Venta
-- View: VentaView
-- Controller: VentaController
+- View: JSP (index.jsp, ventas.jsp y listarVentas.jsp)
+- Controller: VentaServlet y VentaController
 
-### DAO (Data Access Object)
+## DAO (Data Access Object)
 
 Implementado mediante:
 
@@ -44,79 +61,140 @@ Implementado mediante:
 
 Permite desacoplar la lógica de negocio del acceso a datos.
 
-### Inyección de Dependencias
+## Inyección de Dependencias
 
-Las dependencias son inyectadas mediante interfaces.
+Las dependencias son inyectadas mediante el constructor.
 
 Ejemplo:
+
+```java
 IVentaDAO dao = new VentaDAOMock();
-VentaService ventaService = new VentaService(dao);
+VentaService service = new VentaService(dao);
+```
 
-### Principios SOLID
+## Principios SOLID
 
-Se aplica el principio DIP, permitiendo que la lógica de negocio utilice la interfaz IVentaDAO y pueda cambiar fácilmente la implementación del acceso a datos sin modificar el servicio.
+Se aplica el principio DIP (Dependency Inversion Principle), permitiendo cambiar fácilmente la implementación del acceso a datos sin modificar la lógica de negocio.
 
-## Tecnologías y librerías utilizadas
+---
 
-### Java 21
+# Tecnologías y Librerías Utilizadas
 
-Lenguaje principal utilizado para el desarrollo del sistema.
+- Java 21
+- Maven
+- Apache Tomcat 10.1
+- JSP
+- Jakarta Servlet
+- Bootstrap 5
+- SweetAlert2
+- Apache POI
+- Google Guava
+- Logback
+- JUnit 5
+- Mockito
+- Git y GitHub
 
-### Maven
+---
 
-Gestión de dependencias y construcción del proyecto.
+# Funcionalidades Implementadas
 
-### Apache POI
+- Registro de ventas.
+- Listado de ventas.
+- Exportación de ventas a Excel (.xlsx).
+- Generación automática del ID de venta.
+- Validaciones con Google Guava.
+- Registro de eventos mediante Logback.
+- Mensajes interactivos con SweetAlert2.
+- Arquitectura por capas.
+- Patrón DAO.
+- Inyección de dependencias.
+- Aplicación del patrón MVC.
+- Aplicación del principio SOLID (DIP).
+- Pruebas unitarias con JUnit 5 y Mockito.
 
-Generación de reportes Excel (.xlsx) con formato y datos de ventas.
+---
 
-### Logback
+# Flujo de la Aplicación
 
-Registro de eventos del sistema mediante logs.
+```
+JSP
+   │
+   ▼
+VentaServlet
+   │
+   ▼
+VentaController
+   │
+   ▼
+VentaService
+   │
+   ▼
+IVentaDAO
+   │
+   ▼
+VentaDAOMock
+```
 
-### Google Guava
+---
 
-Validaciones y utilidades mediante:
+# Pruebas Unitarias
 
-* Preconditions.checkNotNull()
-* Preconditions.checkArgument()
-* Lists.newArrayList()
+Las pruebas unitarias se implementaron en:
 
-### JUnit 5
-
-Implementación de pruebas unitarias para validar reglas de negocio.
-
-### Git y GitHub
-
-Control de versiones y gestión del repositorio.
-
-
-## Funcionalidades implementadas
-
-* Registro de ventas.
-* Validaciones de negocio con Google Guava.
-* Registro de eventos mediante Logback.
-* Exportación de ventas a Excel usando Apache POI.
-* Arquitectura por capas.
-* Patrón DAO.
-* Inyección de dependencias.
-* Pruebas unitarias con JUnit.
-* Implementación de MVC.
-* Aplicación del principio SOLID (DIP).
-
-## Pruebas Unitarias
-
-Se implementaron pruebas unitarias en la clase:
-
+```
 src/test/java/pe/utp/paladart/business/VentaServiceTest.java
+```
 
-### Casos de prueba implementados
+## Casos de prueba
 
-* validarMetodoPagoObligatorio()
-* validarTotalMayorACero()
-* validarIdVentaMayorACero()
+- Validar método de pago obligatorio.
+- Validar total mayor a cero.
+- Validar ID mayor a cero.
+- Registrar venta correctamente utilizando Mockito.
 
-### Resultado
+## Resultado
 
-* 3 pruebas ejecutadas correctamente.
-* Todas las validaciones de negocio superadas satisfactoriamente.
+- 4 pruebas ejecutadas.
+- 0 errores.
+- 0 fallos.
+
+```
+Tests run: 4
+Failures: 0
+Errors: 0
+BUILD SUCCESS
+```
+
+---
+
+# Ejecución del Proyecto
+
+## Compilar
+
+```bash
+mvn clean package
+```
+
+## Desplegar
+
+Desplegar el archivo generado:
+
+```
+target/paladart-1.0-SNAPSHOT.war
+```
+
+en Apache Tomcat 10.1.
+
+## Acceder desde el navegador
+
+```
+http://localhost:8080/paladart-1.0-SNAPSHOT/
+```
+
+---
+
+# Autor
+
+Proyecto desarrollado para el curso **Integrador I - Sistemas de Software**.
+
+Universidad Tecnológica del Perú (UTP).

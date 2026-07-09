@@ -6,42 +6,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 
+import java.util.List;
+
 /*
  * Clase que contiene las reglas de negocio
  * relacionadas con las ventas.
  */
 public class VentaService {
-    // Logger para registrar eventos del sistema
+
     private static final Logger logger =
             LoggerFactory.getLogger(VentaService.class);
 
     private IVentaDAO ventaDAO;
 
-    /*
-     * Inyección de dependencias por constructor.
-     */
     public VentaService(IVentaDAO ventaDAO) {
         this.ventaDAO = ventaDAO;
     }
 
     public void registrarVenta(Venta venta) {
 
-        // Validación con Google Guava: la venta no puede ser nula
         Preconditions.checkNotNull(
                 venta,
                 "La venta no puede ser nula");
 
-        // Validación con Google Guava: el total debe ser válido
         Preconditions.checkArgument(
                 venta.getTotal() > 0,
                 "El total debe ser mayor a cero");
 
-        // Validación con Google Guava: el ID debe ser válido
-        Preconditions.checkArgument(
-                venta.getIdVenta() > 0,
-                "El ID de la venta debe ser mayor a cero");
-
-        // Validación con Google Guava: debe existir método de pago
         Preconditions.checkArgument(
                 venta.getMetodoPago() != null && !venta.getMetodoPago().isBlank(),
                 "Debe especificar un método de pago");
@@ -49,5 +40,13 @@ public class VentaService {
         ventaDAO.crearVenta(venta);
 
         logger.info("Venta registrada correctamente.");
+    }
+
+    public List<Venta> listarVentas() {
+        logger.info("Consultando lista de ventas registradas.");
+        return ventaDAO.listarVentas();
+    }
+    public int obtenerSiguienteId() {
+        return ventaDAO.listarVentas().size() + 1;
     }
 }
