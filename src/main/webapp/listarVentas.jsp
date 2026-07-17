@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="pe.utp.paladart.domain.Venta" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="pe.utp.paladart.domain.Comprobante" %>
 
 <%
     // Recibe la lista de ventas enviada desde VentaServlet
@@ -8,6 +10,9 @@
 
     // Recibe el mensaje de éxito enviado por URL
     String mensaje = request.getParameter("mensaje");
+        Map<Integer, Comprobante> comprobantesPorVenta =
+                (Map<Integer, Comprobante>)
+                        request.getAttribute("comprobantesPorVenta");
 %>
 
 <html>
@@ -58,6 +63,7 @@
                         <th>ID Venta</th>
                         <th>Total</th>
                         <th>Método de Pago</th>
+                        <th>Comprobante</th>
                     </tr>
                     </thead>
 
@@ -69,13 +75,49 @@
                             <td><%= venta.getIdVenta() %></td>
                             <td>S/ <%= venta.getTotal() %></td>
                             <td><%= venta.getMetodoPago() %></td>
+                            <td>
+                                <%
+                                    Comprobante comprobante = null;
+
+                                    if (comprobantesPorVenta != null) {
+                                        comprobante =
+                                                comprobantesPorVenta.get(
+                                                        venta.getIdVenta()
+                                                );
+                                    }
+                                %>
+
+                                <% if (comprobante == null) { %>
+
+                                    <a href="comprobantes?accion=nuevo&idVenta=<%= venta.getIdVenta() %>&total=<%= venta.getTotal() %>"
+                                       class="btn btn-outline-success btn-sm">
+
+                                        <i class="bi bi-receipt"></i>
+                                        Emitir
+                                    </a>
+
+                                <% } else { %>
+
+                                    <a href="comprobantes?accion=ver&idVenta=<%= venta.getIdVenta() %>"
+                                       class="btn btn-outline-primary btn-sm">
+
+                                        <i class="bi bi-eye"></i>
+                                        Ver comprobante
+                                    </a>
+
+                                    <span class="badge bg-success ms-1">
+                                        <%= comprobante.getSerie() %>-<%= comprobante.getNumero() %>
+                                    </span>
+
+                                <% } %>
+                            </td>
                         </tr>
                         <% } %>
 
                     <% } else { %>
 
                         <tr>
-                            <td colspan="3" class="text-center text-muted">
+                            <td colspan="4" class="text-center text-muted">
                                 No hay ventas registradas.
                             </td>
                         </tr>

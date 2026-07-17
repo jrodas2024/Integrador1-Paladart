@@ -33,3 +33,98 @@ body {
     border: none;
     border-radius: 15px;
 }
+
+/* Inicio de sesión */
+
+.login-body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eef2ff;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 1050px;
+    min-height: 620px;
+    display: grid;
+    grid-template-columns: 42% 58%;
+    overflow: hidden;
+    background: white;
+    border-radius: 25px;
+}
+
+.login-brand {
+    padding: 70px 45px;
+    color: white;
+    text-align: center;
+    background: #08265f;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-logo {
+    font-size: 85px;
+    color: #ffc94a;
+}
+
+.login-brand h1 {
+    margin-top: 20px;
+    font-family: Georgia, serif;
+    letter-spacing: 3px;
+}
+
+.brand-subtitle {
+    color: #ffc94a;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.brand-line {
+    width: 45px;
+    height: 3px;
+    margin: 20px 0;
+    background: #ffc94a;
+}
+
+.brand-description {
+    color: #dbe5ff;
+}
+
+.login-form {
+    padding: 80px 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.usuarios-prueba {
+    padding: 12px 16px;
+    background: #f4f6fb;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.paladart-navbar {
+    background: #08265f;
+}
+
+@media (max-width: 768px) {
+
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-brand {
+        padding: 35px 20px;
+    }
+
+    .login-form {
+        padding: 45px 25px;
+    }
+}
