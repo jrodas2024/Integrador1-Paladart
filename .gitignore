@@ -33,3 +33,8 @@ surefire-reports/
 # Archivos generados
 # ==========================
 *.xlsx
+
+# ==========================
+# Variables de entorno
+# ==========================
+.env
