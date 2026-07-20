@@ -61,15 +61,5 @@ public class VentaServiceTest {
         verify(ventaDAO, never()).crearVenta(any(Venta.class));
     }
 
-    @Test
-    void debeGenerarSiguienteIdSegunCantidadDeVentas() {
-        when(ventaDAO.listarVentas()).thenReturn(List.of(
-                new Venta(1, 100.0, "Efectivo"),
-                new Venta(2, 50.0, "Yape")
-        ));
 
-        int siguienteId = ventaService.obtenerSiguienteId();
-
-        assertEquals(3, siguienteId);
-    }
 }

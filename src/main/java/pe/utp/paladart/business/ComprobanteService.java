@@ -20,7 +20,8 @@ public class ComprobanteService {
             String tipo,
             String nombreCliente,
             String documentoCliente,
-            double total) {
+            double total
+    ) {
 
         Preconditions.checkArgument(
                 idVenta > 0,
@@ -33,9 +34,11 @@ public class ComprobanteService {
         );
 
         Preconditions.checkArgument(
-                tipo != null &&
-                        (tipo.equalsIgnoreCase("BOLETA")
-                                || tipo.equalsIgnoreCase("FACTURA")),
+                tipo != null
+                        && (
+                        tipo.equalsIgnoreCase("BOLETA")
+                                || tipo.equalsIgnoreCase("FACTURA")
+                ),
                 "Debe seleccionar boleta o factura"
         );
 
@@ -44,57 +47,91 @@ public class ComprobanteService {
                 "El total debe ser mayor a cero"
         );
 
-        String documento = documentoCliente == null
-                ? ""
-                : documentoCliente.trim();
+        /*
+         * Limpia espacios y cualquier carácter
+         * diferente de un número.
+         */
+        String documento =
+                documentoCliente == null
+                        ? ""
+                        : documentoCliente.replaceAll(
+                        "\\D",
+                        ""
+                );
 
         if (tipo.equalsIgnoreCase("FACTURA")) {
+
             Preconditions.checkArgument(
                     documento.matches("\\d{11}"),
                     "Para emitir una factura debe ingresar un RUC de 11 dígitos"
             );
         }
 
-        if (tipo.equalsIgnoreCase("BOLETA") && !documento.isEmpty()) {
+        if (
+                tipo.equalsIgnoreCase("BOLETA")
+                        && !documento.isEmpty()
+        ) {
+
             Preconditions.checkArgument(
                     documento.matches("\\d{8}"),
                     "El DNI debe tener 8 dígitos"
             );
         }
 
-        int siguienteId = comprobanteDAO.listar().size() + 1;
-        String serie = tipo.equalsIgnoreCase("BOLETA") ? "B001" : "F001";
-        String numero = String.format("%08d", siguienteId);
+        int numeroSiguiente =
+                comprobanteDAO.listar().size() + 1;
 
-        double subtotal = redondear(total / 1.18);
-        double igv = redondear(total - subtotal);
+        String serie =
+                tipo.equalsIgnoreCase("BOLETA")
+                        ? "B001"
+                        : "F001";
 
-        Comprobante comprobante = new Comprobante(
-                siguienteId,
-                idVenta,
-                tipo.toUpperCase(),
-                serie,
-                numero,
-                nombreCliente == null ? "" : nombreCliente.trim(),
-                documento,
-                subtotal,
-                igv,
-                redondear(total),
-                LocalDateTime.now()
-        );
+        String numero =
+                String.format(
+                        "%08d",
+                        numeroSiguiente
+                );
+
+        double subtotal =
+                redondear(total / 1.18);
+
+        double igv =
+                redondear(total - subtotal);
+
+        Comprobante comprobante =
+                new Comprobante(
+                        0,
+                        idVenta,
+                        tipo.toUpperCase(),
+                        serie,
+                        numero,
+                        nombreCliente == null
+                                ? ""
+                                : nombreCliente.trim(),
+                        documento,
+                        subtotal,
+                        igv,
+                        redondear(total),
+                        LocalDateTime.now()
+                );
 
         comprobanteDAO.guardar(comprobante);
-        return comprobante;
+
+        return comprobanteDAO.buscarPorIdVenta(
+                idVenta
+        );
     }
 
     public List<Comprobante> listar() {
         return comprobanteDAO.listar();
     }
 
-    private double redondear(double valor) {
-        return Math.round(valor * 100.0) / 100.0;
-    }
     public Comprobante buscarPorVenta(int idVenta) {
         return comprobanteDAO.buscarPorIdVenta(idVenta);
     }
+
+    private double redondear(double valor) {
+        return Math.round(valor * 100.0) / 100.0;
+    }
 }
+

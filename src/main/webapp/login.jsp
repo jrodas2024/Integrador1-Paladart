@@ -98,10 +98,6 @@
 
         </form>
 
-        <div class="usuarios-prueba mt-4">
-            <p class="mb-1"><strong>Administrador:</strong> admin / admin123</p>
-            <p class="mb-0"><strong>Vendedor:</strong> vendedor / venta123</p>
-        </div>
 
         <p class="text-center text-muted small mt-5">
             © 2026 Paladart Restaurante

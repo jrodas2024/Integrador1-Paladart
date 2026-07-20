@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import pe.utp.paladart.business.UsuarioService;
 import pe.utp.paladart.domain.Usuario;
 import pe.utp.paladart.persistence.IUsuarioDAO;
-import pe.utp.paladart.persistence.UsuarioDAOMock;
+import pe.utp.paladart.persistence.UsuarioDAO;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private final IUsuarioDAO usuarioDAO = new UsuarioDAOMock();
+    private final IUsuarioDAO usuarioDAO = new UsuarioDAO();
 
     private final UsuarioService usuarioService =
             new UsuarioService(usuarioDAO);
@@ -58,7 +58,8 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("usuarioSesion", usuario);
 
             response.sendRedirect(
-                    request.getContextPath() + "/index.jsp"
+                    request.getContextPath()
+                            + "/dashboard"
             );
 
         } catch (IllegalArgumentException e) {
