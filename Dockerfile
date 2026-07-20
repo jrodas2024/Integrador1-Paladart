@@ -31,7 +31,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copia el WAR generado en la etapa anterior
 COPY --from=build /app/target/paladart.war \
-    /usr/local/tomcat/webapps/Root.war
+    /usr/local/tomcat/webapps/ROOT.war
 
 # Puerto utilizado por Tomcat
 EXPOSE 8080
