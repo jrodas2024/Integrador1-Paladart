@@ -1,200 +1,168 @@
-# Integrador1-Paladart
+# Paladart
 
-Proyecto Integrador 1 - Sistema Web de Gestión de Ventas y Emisión de Comprobantes para el restaurante **Paladart**.
-
----
-
-# Descripción
-
-Paladart es una aplicación web desarrollada en Java que permite registrar ventas, consultar el listado de ventas y exportar la información a un archivo Excel. El proyecto fue desarrollado aplicando arquitectura por capas, patrón DAO, inyección de dependencias y pruebas unitarias.
+Sistema Web de Ventas y Emisión de Comprobantes desarrollado en Java como proyecto del curso Integrador I.
 
 ---
 
-# Arquitectura del Proyecto
-
-El proyecto está organizado utilizando una arquitectura por capas:
-
-## Presentation
-- VentaServlet.java
-- index.jsp
-- ventas.jsp
-- listarVentas.jsp
-
-## Controller
-- VentaController.java
-
-## Business
-- VentaService.java
-
-## Persistence
-- IVentaDAO.java
-- VentaDAOMock.java
-
-## Domain
-- Venta.java
-
-## Util
-- ExportadorExcel.java
-
----
-
-# Patrones y Principios Aplicados
-
-## Arquitectura por Capas
-
-Se separó la aplicación en las capas Presentation, Controller, Business, Persistence, Domain y Util para mejorar el mantenimiento, organización y escalabilidad.
-
-## MVC (Model - View - Controller)
-
-Se implementó el patrón MVC en la aplicación web:
-
-- Model: Venta
-- View: JSP (index.jsp, ventas.jsp y listarVentas.jsp)
-- Controller: VentaServlet y VentaController
-
-## DAO (Data Access Object)
-
-Implementado mediante:
-
-- IVentaDAO
-- VentaDAOMock
-
-Permite desacoplar la lógica de negocio del acceso a datos.
-
-## Inyección de Dependencias
-
-Las dependencias son inyectadas mediante el constructor.
-
-Ejemplo:
-
-```java
-IVentaDAO dao = new VentaDAOMock();
-VentaService service = new VentaService(dao);
-```
-
-## Principios SOLID
-
-Se aplica el principio DIP (Dependency Inversion Principle), permitiendo cambiar fácilmente la implementación del acceso a datos sin modificar la lógica de negocio.
-
----
-
-# Tecnologías y Librerías Utilizadas
+## Tecnologías utilizadas
 
 - Java 21
+- JSP y Servlets
+- Apache Tomcat 10
+- PostgreSQL 17
 - Maven
-- Apache Tomcat 10.1
-- JSP
-- Jakarta Servlet
-- Bootstrap 5
-- SweetAlert2
+- Docker y Docker Compose
 - Apache POI
 - Google Guava
 - Logback
-- JUnit 5
-- Mockito
-- Git y GitHub
 
 ---
 
-# Funcionalidades Implementadas
+## Arquitectura
 
-- Registro de ventas.
-- Listado de ventas.
-- Exportación de ventas a Excel (.xlsx).
-- Generación automática del ID de venta.
-- Validaciones con Google Guava.
-- Registro de eventos mediante Logback.
-- Mensajes interactivos con SweetAlert2.
-- Arquitectura por capas.
-- Patrón DAO.
-- Inyección de dependencias.
-- Aplicación del patrón MVC.
-- Aplicación del principio SOLID (DIP).
-- Pruebas unitarias con JUnit 5 y Mockito.
+El proyecto utiliza una arquitectura por capas:
+
+Presentation → Controller → Business → Persistence (DAO) → PostgreSQL
 
 ---
 
-# Flujo de la Aplicación
+## Requisitos
 
-```
-JSP
-   │
-   ▼
-VentaServlet
-   │
-   ▼
-VentaController
-   │
-   ▼
-VentaService
-   │
-   ▼
-IVentaDAO
-   │
-   ▼
-VentaDAOMock
-```
+Antes de ejecutar el proyecto es necesario tener instalado:
+
+- Docker Desktop
+- Docker Compose
 
 ---
 
-# Pruebas Unitarias
+## Configuración
 
-Las pruebas unitarias se implementaron en:
-
-```
-src/test/java/pe/utp/paladart/business/VentaServiceTest.java
-```
-
-## Casos de prueba
-
-- Validar método de pago obligatorio.
-- Validar total mayor a cero.
-- Validar ID mayor a cero.
-- Registrar venta correctamente utilizando Mockito.
-
-## Resultado
-
-- 4 pruebas ejecutadas.
-- 0 errores.
-- 0 fallos.
-
-```
-Tests run: 4
-Failures: 0
-Errors: 0
-BUILD SUCCESS
-```
-
----
-
-# Ejecución del Proyecto
-
-## Compilar
+### 1. Clonar el repositorio
 
 ```bash
-mvn clean package
+git clone <URL_DEL_REPOSITORIO>
 ```
 
-## Desplegar
+### 2. Ingresar al proyecto
 
-Desplegar el archivo generado:
-
-```
-target/paladart-1.0-SNAPSHOT.war
+```bash
+cd Integrador1-Paladart
 ```
 
-en Apache Tomcat 10.1.
+### 3. Crear el archivo `.env`
 
-## Acceder desde el navegador
+Copiar el archivo:
 
 ```
-http://localhost:8080/paladart-1.0-SNAPSHOT/
+.env.example
+```
+
+como:
+
+```
+.env
+```
+
+Modificar las credenciales según el entorno de trabajo.
+
+---
+
+## Ejecutar el proyecto
+
+Construir e iniciar los contenedores:
+
+```bash
+docker compose up --build -d
+```
+
+Verificar que los contenedores estén en ejecución:
+
+```bash
+docker ps
+```
+
+Abrir la aplicación en el navegador:
+
+```
+http://localhost:8080/paladart
 ```
 
 ---
 
-# Autor
+## Detener el proyecto
 
-Proyecto desarrollado para el curso **Integrador I - Sistemas de Software**.
+Detener los contenedores:
 
-Universidad Tecnológica del Perú (UTP).
+```bash
+docker compose down
+```
+
+---
+
+## Base de datos
+
+PostgreSQL utiliza un volumen Docker (`paladart_data`) para almacenar la información.
+
+Al detener o eliminar los contenedores con:
+
+```bash
+docker compose down
+```
+
+los datos de la base de datos se conservan.
+
+Solo se eliminarán si también se elimina el volumen:
+
+```bash
+docker compose down -v
+```
+
+---
+
+
+
+## Variables de entorno
+
+Las credenciales de conexión se administran mediante variables de entorno.
+
+El archivo `.env` contiene la configuración utilizada por Docker y por la aplicación Java durante la ejecución.
+
+El archivo `.env` no se incluye en el repositorio gracias al `.gitignore`. Para facilitar la configuración del proyecto se proporciona el archivo `.env.example`.
+
+---
+
+---
+
+## Comandos útiles
+
+Construir nuevamente la aplicación:
+
+```bash
+docker compose up --build -d
+```
+
+Iniciar los contenedores existentes:
+
+```bash
+docker compose up -d
+```
+
+Detener los contenedores:
+
+```bash
+docker compose down
+```
+
+Eliminar contenedores y la base de datos:
+
+```bash
+docker compose down -v
+```
+
+## Autor
+
+**Julio Rodas**
+
+Universidad Tecnológica del Perú
+
+Curso: Integrador I
